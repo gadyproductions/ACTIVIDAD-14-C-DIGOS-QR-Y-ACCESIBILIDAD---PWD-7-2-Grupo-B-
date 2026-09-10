@@ -1,0 +1,1393 @@
+/* ==========================================================================
+   ACTIVIDAD 14: CÓDIGOS QR Y ACCESIBILIDAD - PWD 7° 2° GRUPO B
+   EEST N.º 1 "Eduardo Ader" - Vicente López (2026)
+   Profesor: Mansilla Muñoz York Elías | Integrante: Gadiel Siles
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   1. VARIABLES DE DISEÑO Y TEMAS DE ACCESIBILIDAD (A11Y)
+   -------------------------------------------------------------------------- */
+:root {
+  /* Paleta moderna por defecto (Dark Tech A11y) */
+  --bg-primary: #0b0f19;
+  --bg-secondary: #111827;
+  --bg-tertiary: #1f2937;
+  --bg-glass: rgba(17, 24, 39, 0.75);
+  --border-glass: rgba(255, 255, 255, 0.12);
+  --border-active: #38bdf8;
+  
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  
+  /* Colores de acento con contraste validado WCAG AA/AAA */
+  --accent-primary: #38bdf8; /* Celeste tecnológico */
+  --accent-hover: #0ea5e9;
+  --accent-glow: rgba(56, 189, 248, 0.35);
+  --accent-argentina: #75aadb; /* Celeste bandera */
+  --accent-gold: #f59e0b; /* Sol de Mayo */
+  --accent-success: #10b981;
+  --accent-danger: #ef4444;
+  --accent-purple: #818cf8;
+
+  /* Tipografía */
+  --font-base: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', Courier, monospace;
+  --font-scale: 1rem;
+  --line-height-base: 1.65;
+  --letter-spacing-base: normal;
+
+  /* Bordes y sombras */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.4);
+  --shadow-glow: 0 0 25px var(--accent-glow);
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Modo Alto Contraste (Yellow on Black / WCAG AAA) */
+body.high-contrast {
+  --bg-primary: #000000 !0important;
+  --bg-secondary: #000000 !important;
+  --bg-tertiary: #111111 !important;
+  --bg-glass: #000000 !important;
+  --border-glass: #ffff00 !important;
+  --border-active: #ffff00 !important;
+  --text-primary: #ffff00 !important;
+  --text-secondary: #ffffff !important;
+  --text-muted: #e2e8f0 !important;
+  --accent-primary: #ffff00 !important;
+  --accent-hover: #ffffff !important;
+  --accent-glow: rgba(255, 255, 0, 0.6) !important;
+  --shadow-glow: 0 0 0 2px #ffff00 !important;
+}
+
+/* Modo Blanco Puro / Contraste Invertido */
+body.light-theme {
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-tertiary: #f1f5f9;
+  --bg-glass: rgba(255, 255, 255, 0.9);
+  --border-glass: rgba(0, 0, 0, 0.12);
+  --border-active: #0284c7;
+  --text-primary: #0f172a;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --accent-primary: #0284c7;
+  --accent-hover: #0369a1;
+  --accent-glow: rgba(2, 132, 199, 0.25);
+  --shadow-sm: 0 4px 6px -1px rgba(0, 0, 0, 0.08);
+  --shadow-md: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+/* Modo Dislexia (Tipografía de fácil lectura y mayor espaciado) */
+body.dyslexia-font {
+  font-family: 'OpenDyslexic', 'Comic Sans MS', 'Chalkboard SE', 'Trebuchet MS', sans-serif !important;
+  line-height: 1.9 !important;
+  letter-spacing: 0.08em !important;
+  word-spacing: 0.15em !important;
+}
+
+/* Resaltado de lectura por voz activa */
+.tts-speaking {
+  outline: 3px solid var(--accent-gold) !important;
+  background-color: rgba(245, 158, 11, 0.15) !important;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+/* Tamaños de texto accesibles */
+body.text-size-lg {
+  font-size: 1.15rem;
+}
+body.text-size-xl {
+  font-size: 1.3rem;
+}
+
+/* Resaltado de enlaces accesibles */
+body.highlight-links a {
+  text-decoration: underline !important;
+  text-decoration-color: var(--accent-gold) !important;
+  text-decoration-thickness: 3px !important;
+  text-underline-offset: 4px !important;
+  font-weight: 700 !important;
+}
+
+/* --------------------------------------------------------------------------
+   2. ESTILOS BASE Y RESET
+   -------------------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  font-size: 16px;
+}
+
+body {
+  font-family: var(--font-base);
+  font-size: var(--font-scale);
+  line-height: var(--line-height-base);
+  letter-spacing: var(--letter-spacing-base);
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+  transition: background-color var(--transition-normal), color var(--transition-normal);
+}
+
+/* Fondo decorativo sutil en gradiente tecnológico */
+body::before {
+  content: '';
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 120vw;
+  height: 120vh;
+  background: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.08) 0%, transparent 40%),
+              radial-gradient(circle at 80% 80%, rgba(129, 140, 248, 0.07) 0%, transparent 45%),
+              radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 50%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* Skip to content para lectores de pantalla y navegación por teclado */
+.skip-link {
+  position: absolute;
+  top: -60px;
+  left: 20px;
+  background: var(--accent-gold);
+  color: #000000;
+  padding: 12px 20px;
+  font-weight: 700;
+  border-radius: var(--radius-sm);
+  z-index: 9999;
+  transition: top var(--transition-fast);
+  text-decoration: none;
+}
+.skip-link:focus {
+  top: 15px;
+  outline: 3px solid #ffffff;
+}
+
+/* Enfoque accesible visible */
+:focus-visible {
+  outline: 3px solid var(--accent-primary);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --------------------------------------------------------------------------
+   3. BARRA FLOTANTE DE ACCESIBILIDAD (A11Y CONTROLS)
+   -------------------------------------------------------------------------- */
+.a11y-toolbar-wrapper {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  z-index: 1000;
+}
+
+.a11y-toggle-btn {
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-purple));
+  color: #0b0f19;
+  border: none;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.4), var(--shadow-glow);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 1.5rem;
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+.a11y-toggle-btn:hover {
+  transform: scale(1.08);
+}
+
+.a11y-panel {
+  position: absolute;
+  bottom: 70px;
+  right: 0;
+  width: 320px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+  backdrop-filter: blur(16px);
+  display: none;
+  flex-direction: column;
+  gap: 16px;
+  animation: fadeIn 0.25s ease-out;
+}
+.a11y-panel.is-open {
+  display: flex;
+}
+
+.a11y-panel-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 10px;
+}
+.a11y-panel-header h3 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.a11y-close-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 4px;
+}
+.a11y-close-btn:hover {
+  color: var(--text-primary);
+}
+
+.a11y-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.a11y-group-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-secondary);
+}
+.a11y-btn-row {
+  display: flex;
+  gap: 8px;
+}
+.a11y-btn {
+  flex: 1;
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  padding: 8px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.88rem;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-weight: 500;
+}
+.a11y-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent-primary);
+}
+.a11y-btn.active {
+  background: var(--accent-primary);
+  color: #0b0f19;
+  font-weight: 700;
+  border-color: var(--accent-primary);
+}
+
+/* --------------------------------------------------------------------------
+   4. ENCABEZADO INSTITUCIONAL Y NAVEGACIÓN
+   -------------------------------------------------------------------------- */
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: var(--bg-glass);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border-glass);
+  padding: 12px 0;
+  transition: background var(--transition-normal);
+}
+
+.header-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.brand-badge {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+}
+.brand-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(135deg, #0284c7, #38bdf8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.4rem;
+  color: #ffffff;
+  box-shadow: 0 4px 10px rgba(2, 132, 199, 0.4);
+}
+.brand-info h1 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  line-height: 1.2;
+  color: var(--text-primary);
+}
+.brand-info span {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  display: block;
+}
+
+.nav-links {
+  display: flex;
+  gap: 8px;
+  list-style: none;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.nav-link {
+  color: var(--text-secondary);
+  text-decoration: none;
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+.nav-link:hover, .nav-link:focus {
+  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.08);
+}
+.nav-link.active-nav {
+  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.14);
+  font-weight: 700;
+}
+
+/* --------------------------------------------------------------------------
+   5. CONTENEDOR PRINCIPAL Y HERO BANNER
+   -------------------------------------------------------------------------- */
+.main-wrapper {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 30px 20px 80px;
+  display: flex;
+  flex-direction: column;
+  gap: 60px;
+}
+
+/* Hero Section */
+.hero-section {
+  display: grid;
+  grid-template-columns: 1.2fr 0.8fr;
+  gap: 40px;
+  align-items: center;
+  background: linear-gradient(145deg, var(--bg-secondary), rgba(17, 24, 39, 0.5));
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 48px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-md);
+}
+.hero-section::after {
+  content: '';
+  position: absolute;
+  top: -50px;
+  right: -50px;
+  width: 250px;
+  height: 250px;
+  background: radial-gradient(circle, var(--accent-glow) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.hero-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent-primary);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 20px;
+}
+.hero-tag .dot {
+  width: 8px;
+  height: 8px;
+  background: var(--accent-primary);
+  border-radius: 50%;
+  animation: pulseDot 2s infinite;
+}
+
+.hero-title {
+  font-size: clamp(2rem, 3.8vw, 2.9rem);
+  font-weight: 800;
+  line-height: 1.15;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+}
+.hero-title .gradient-text {
+  background: linear-gradient(120deg, #38bdf8, #818cf8, #38bdf8);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shine 4s linear infinite;
+}
+
+.hero-subtitle {
+  font-size: 1.08rem;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  margin-bottom: 28px;
+  max-width: 600px;
+}
+
+.hero-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  padding: 16px 20px;
+  border-radius: var(--radius-md);
+  margin-bottom: 28px;
+}
+.meta-item {
+  display: flex;
+  flex-direction: column;
+}
+.meta-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.meta-value {
+  font-size: 0.95rem;
+  color: var(--text-primary);
+  font-weight: 700;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+/* Tarjeta Destacada Hero (Vista Previa QR) */
+.hero-preview-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.35);
+  position: relative;
+}
+.hero-qr-box {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  margin-bottom: 16px;
+  display: inline-block;
+}
+.hero-qr-box canvas, .hero-qr-box img {
+  display: block;
+}
+.hero-preview-title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.hero-preview-desc {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}
+
+/* --------------------------------------------------------------------------
+   6. BANNER ALENTADOR ARGENTA
+   -------------------------------------------------------------------------- */
+.argenta-banner {
+  background: linear-gradient(135deg, rgba(117, 170, 219, 0.12), rgba(245, 158, 11, 0.12));
+  border: 1px solid rgba(117, 170, 219, 0.3);
+  border-radius: var(--radius-md);
+  padding: 22px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+}
+.argenta-content {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.argenta-icon {
+  font-size: 2.2rem;
+  flex-shrink: 0;
+}
+.argenta-quote {
+  font-size: 1.15rem;
+  font-style: italic;
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.5;
+}
+.argenta-author {
+  display: block;
+  font-size: 0.85rem;
+  font-style: normal;
+  color: var(--accent-argentina);
+  margin-top: 4px;
+  font-weight: 500;
+}
+.btn-speech {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  padding: 10px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+  transition: all var(--transition-fast);
+}
+.btn-speech:hover {
+  background: var(--accent-primary);
+  color: #0b0f19;
+  border-color: var(--accent-primary);
+}
+
+/* --------------------------------------------------------------------------
+   7. SECCIONES Y ENCABEZADOS DE MÓDULOS
+   -------------------------------------------------------------------------- */
+.module-section {
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.section-badge {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--accent-primary);
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.section-title {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.section-desc {
+  font-size: 1rem;
+  color: var(--text-secondary);
+  max-width: 800px;
+}
+
+/* Botones universales */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  border: none;
+}
+.btn-primary {
+  background: linear-gradient(135deg, var(--accent-primary), #0284c7);
+  color: #0b0f19;
+  box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+}
+.btn-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(56, 189, 248, 0.45);
+}
+.btn-secondary {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+}
+.btn-secondary:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: var(--text-secondary);
+}
+.btn-sm {
+  padding: 8px 14px;
+  font-size: 0.85rem;
+}
+
+/* --------------------------------------------------------------------------
+   8. MÓDULO 1: ACCESIBILIDAD WEB (A11Y) - GUÍA PEDAGÓGICA Y PRINCIPIOS POUR
+   -------------------------------------------------------------------------- */
+.a11y-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
+  gap: 20px;
+}
+
+.a11y-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-sm);
+  transition: transform var(--transition-fast), border-color var(--transition-fast);
+  position: relative;
+}
+.a11y-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-active);
+}
+.a11y-card-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  background: var(--bg-tertiary);
+}
+.a11y-card-icon.p-icon { color: #38bdf8; background: rgba(56, 189, 248, 0.12); }
+.a11y-card-icon.o-icon { color: #10b981; background: rgba(16, 185, 129, 0.12); }
+.a11y-card-icon.u-icon { color: #f59e0b; background: rgba(245, 158, 11, 0.12); }
+.a11y-card-icon.r-icon { color: #818cf8; background: rgba(129, 140, 248, 0.12); }
+
+.a11y-card h4 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+.a11y-card p {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+.a11y-card ul {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  border-top: 1px solid var(--border-glass);
+  padding-top: 10px;
+}
+.a11y-card ul li::before {
+  content: "✓ ";
+  color: var(--accent-success);
+  font-weight: bold;
+}
+
+/* Caja de marco legal */
+.legal-box {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-left: 4px solid var(--accent-gold);
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.legal-box h4 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--accent-gold);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.legal-box p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* --------------------------------------------------------------------------
+   9. MÓDULO 2: DESAFÍO EXPO TÉCNICA - GENERADOR DINÁMICO DE QR
+   -------------------------------------------------------------------------- */
+.qr-generator-layout {
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 32px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+}
+
+.generator-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.input-group label {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.input-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.input-text, .select-input {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  color: var(--text-primary);
+  padding: 12px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-family: inherit;
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  width: 100%;
+}
+.input-text:focus, .select-input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px var(--accent-glow);
+  outline: none;
+}
+
+/* Preajustes rápidos Expo Técnica */
+.preset-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.preset-section span {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+.preset-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.preset-btn {
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  border: 1px solid var(--border-glass);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.preset-btn:hover {
+  background: rgba(56, 189, 248, 0.15);
+  border-color: var(--accent-primary);
+  color: var(--accent-primary);
+}
+
+/* Controles de color y tamaño */
+.custom-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 12px;
+}
+.color-picker-box {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+}
+.color-picker-box input[type="color"] {
+  -webkit-appearance: none;
+  border: none;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  cursor: pointer;
+  background: none;
+}
+.color-picker-box span {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  font-family: var(--font-mono);
+}
+
+/* Vista previa del QR Generado */
+.generator-preview {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-tertiary);
+  border: 1px dashed var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 30px;
+  position: relative;
+  text-align: center;
+}
+
+.qr-display-card {
+  background: #ffffff;
+  padding: 20px;
+  border-radius: var(--radius-md);
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+  position: relative;
+  transition: transform var(--transition-fast);
+}
+.qr-display-card:hover {
+  transform: scale(1.02);
+}
+
+#qrcode-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 180px;
+  min-height: 180px;
+}
+#qrcode-container canvas, #qrcode-container img {
+  display: block;
+}
+
+.qr-caption {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.qr-actions-row {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Alerta de contraste para el código QR */
+.qr-contrast-badge {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  padding: 6px 12px;
+  border-radius: 999px;
+  margin-top: 14px;
+}
+.qr-contrast-badge.good {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34d399;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+.qr-contrast-badge.bad {
+  background: rgba(239, 68, 68, 0.15);
+  color: #f87171;
+  border: 1px solid rgba(239, 68, 68, 0.3);
+}
+
+/* --------------------------------------------------------------------------
+   10. MÓDULO 3: VALIDADOR / ESCÁNER DE QR
+   -------------------------------------------------------------------------- */
+.scanner-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 28px;
+}
+
+.dropzone-box {
+  border: 2px dashed var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 30px;
+  text-align: center;
+  cursor: pointer;
+  background: var(--bg-tertiary);
+  transition: all var(--transition-fast);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.dropzone-box:hover, .dropzone-box.dragover {
+  border-color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.08);
+}
+.dropzone-icon {
+  font-size: 2.5rem;
+  color: var(--accent-primary);
+}
+
+.scanner-camera-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  background: var(--bg-tertiary);
+  border-radius: var(--radius-md);
+  padding: 20px;
+  text-align: center;
+}
+#camera-video {
+  width: 100%;
+  max-width: 320px;
+  height: 220px;
+  background: #000000;
+  border-radius: var(--radius-sm);
+  object-fit: cover;
+  display: none;
+}
+
+.scan-result-card {
+  grid-column: 1 / -1;
+  background: var(--bg-primary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.scan-result-text {
+  font-family: var(--font-mono);
+  color: var(--accent-primary);
+  word-break: break-all;
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   11. MÓDULO 4: ARTICULACIÓN CON EL PROYECTO ANUAL - MANUALES TÉCNICOS
+   -------------------------------------------------------------------------- */
+.manuals-container {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-lg);
+  padding: 36px;
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.manuals-tabs {
+  display: flex;
+  gap: 12px;
+  border-bottom: 1px solid var(--border-glass);
+  padding-bottom: 12px;
+}
+.tab-btn {
+  background: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-tertiary);
+}
+.tab-btn.active {
+  color: var(--accent-primary);
+  background: rgba(56, 189, 248, 0.12);
+  border-color: var(--accent-primary);
+}
+
+.manual-content {
+  display: none;
+  flex-direction: column;
+  gap: 28px;
+  animation: fadeIn 0.3s ease-out;
+}
+.manual-content.active {
+  display: flex;
+}
+
+.manual-dossier {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 32px;
+  line-height: 1.8;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.manual-header-badge {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 2px solid var(--border-glass);
+  padding-bottom: 14px;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.dossier-title {
+  font-size: 1.45rem;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.dossier-version {
+  font-size: 0.85rem;
+  font-family: var(--font-mono);
+  background: var(--bg-secondary);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--accent-primary);
+}
+
+.manual-section-block {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.manual-section-block h4 {
+  font-size: 1.15rem;
+  color: var(--accent-primary);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* PÁGINA FINAL DEL MANUAL: CÓDIGO QR GENERADO POR CÓDIGO (CONSIGNA OBLIGATORIA) */
+.manual-last-page-card {
+  background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(129, 140, 248, 0.15));
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius-md);
+  padding: 30px;
+  display: grid;
+  grid-template-columns: 1fr 220px;
+  gap: 28px;
+  align-items: center;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+  margin-top: 20px;
+}
+.last-page-info h4 {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 10px;
+}
+.last-page-info p {
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin-bottom: 14px;
+}
+.last-page-target-url {
+  font-family: var(--font-mono);
+  font-size: 0.85rem;
+  background: var(--bg-secondary);
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  color: var(--accent-gold);
+  display: inline-block;
+  word-break: break-all;
+}
+
+.last-page-qr-wrapper {
+  background: #ffffff;
+  padding: 16px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 10px 20px rgba(0,0,0,0.25);
+  text-align: center;
+}
+.last-page-qr-wrapper canvas, .last-page-qr-wrapper img {
+  display: block;
+}
+.last-page-qr-caption {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-top: 8px;
+}
+
+/* --------------------------------------------------------------------------
+   12. MÓDULO 5: CALCULADORA DE CONTRASTE WCAG
+   -------------------------------------------------------------------------- */
+.contrast-tool-card {
+  background: var(--bg-secondary);
+  border: 1px solid var(--border-glass);
+  border-radius: var(--radius-md);
+  padding: 28px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 28px;
+}
+.contrast-inputs {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.contrast-preview-box {
+  border-radius: var(--radius-md);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+  transition: all var(--transition-fast);
+}
+.contrast-ratio-value {
+  font-size: 2.8rem;
+  font-weight: 900;
+  line-height: 1;
+}
+.contrast-badges {
+  display: flex;
+  gap: 10px;
+}
+.badge-wcag {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+.badge-wcag.pass {
+  background: #10b981;
+  color: #ffffff;
+}
+.badge-wcag.fail {
+  background: #ef4444;
+  color: #ffffff;
+}
+
+/* --------------------------------------------------------------------------
+   13. PIE DE PÁGINA (FOOTER)
+   -------------------------------------------------------------------------- */
+.site-footer {
+  background: var(--bg-secondary);
+  border-top: 1px solid var(--border-glass);
+  padding: 40px 20px;
+  margin-top: 40px;
+}
+.footer-container {
+  max-width: 1240px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 24px;
+}
+.footer-info h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 6px;
+}
+.footer-info p {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+}
+.footer-credits {
+  text-align: right;
+}
+.student-badge {
+  display: inline-block;
+  background: rgba(56, 189, 248, 0.12);
+  color: var(--accent-primary);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+/* --------------------------------------------------------------------------
+   14. ANIMACIONES
+   -------------------------------------------------------------------------- */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.4; transform: scale(1.3); }
+}
+
+@keyframes shine {
+  to { background-position: 200% center; }
+}
+
+/* --------------------------------------------------------------------------
+   15. ESTILOS DE IMPRESIÓN AMIGABLE (PRINT MEDIA QUERY)
+   -------------------------------------------------------------------------- */
+@media print {
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    font-size: 12pt;
+  }
+  .site-header, .a11y-toolbar-wrapper, .hero-actions, .preset-section, 
+  .generator-controls, .qr-actions-row, .manuals-tabs, .btn, .btn-speech,
+  #scanner, #wcag-tool {
+    display: none !important;
+  }
+  .main-wrapper {
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+    gap: 20px;
+  }
+  .manuals-container, .manual-dossier, .manual-last-page-card {
+    border: 1px solid #cccccc !important;
+    box-shadow: none !important;
+    background: #ffffff !important;
+    color: #000000 !important;
+  }
+  .manual-content {
+    display: flex !important;
+    page-break-after: always;
+  }
+  .manual-last-page-card {
+    page-break-before: always;
+    border: 2px solid #000000 !important;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   16. RESPONSIVIDAD (MOBILE & TABLET)
+   -------------------------------------------------------------------------- */
+@media (max-width: 960px) {
+  .hero-section {
+    grid-template-columns: 1fr;
+    padding: 32px 24px;
+  }
+  .qr-generator-layout {
+    grid-template-columns: 1fr;
+    padding: 24px;
+  }
+  .manual-last-page-card {
+    grid-template-columns: 1fr;
+    text-align: center;
+    justify-items: center;
+  }
+  .scanner-grid, .contrast-tool-card {
+    grid-template-columns: 1fr;
+  }
+  .footer-credits {
+    text-align: left;
+  }
+}
+
+@media (max-width: 600px) {
+  .custom-grid {
+    grid-template-columns: 1fr;
+  }
+  .argenta-banner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .header-container {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .nav-links {
+    width: 100%;
+    justify-content: flex-start;
+    overflow-x: auto;
+    padding-bottom: 4px;
+  }
+}

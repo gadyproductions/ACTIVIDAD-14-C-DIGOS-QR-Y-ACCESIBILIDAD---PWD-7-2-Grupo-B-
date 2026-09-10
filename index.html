@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Actividad 14: Códigos QR y Accesibilidad Web (a11y) - Proyecto de Implementación de Sitios web Dinámicos (PWD) 7° 2° Grupo B - EEST N.º 1 'Eduardo Ader'. Desarrollado por Gadiel Siles.">
+  <meta name="author" content="Gadiel Siles">
+  <meta name="theme-color" content="#0b0f19">
+
+  <title>Actividad 14: Códigos QR y Accesibilidad | PWD 7° 2° - Gadiel Siles</title>
+
+  <!-- Tipografía moderna Google Fonts (Outfit & JetBrains Mono) con fallback local -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Outfit:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+
+  <!-- Estilos de la aplicación -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+  <!-- Enlace accesible de salto al contenido -->
+  <a href="#main-content" class="skip-link">Saltar al contenido principal</a>
+
+  <!-- ======================================================================
+       BARRA FLOTANTE DE ACCESIBILIDAD (A11Y CONTROLS)
+       ====================================================================== -->
+  <aside class="a11y-toolbar-wrapper" aria-label="Herramientas de Accesibilidad">
+    <button id="a11y-toggle-btn" class="a11y-toggle-btn" aria-label="Abrir panel de accesibilidad" aria-expanded="false" title="Opciones de Accesibilidad (a11y)">
+      ♿
+    </button>
+
+    <div id="a11y-panel" class="a11y-panel" role="region" aria-label="Opciones de accesibilidad visual y auditiva">
+      <div class="a11y-panel-header">
+        <h3>♿ Accesibilidad (a11y)</h3>
+        <button id="a11y-close-btn" class="a11y-close-btn" aria-label="Cerrar panel de accesibilidad">✕</button>
+      </div>
+
+      <!-- Contraste / Tema -->
+      <div class="a11y-group">
+        <span class="a11y-group-label">Tema y Contraste (WCAG)</span>
+        <div class="a11y-btn-row">
+          <button id="btn-theme-default" class="a11y-btn active" title="Tema oscuro tecnológico por defecto">Oscuro</button>
+          <button id="btn-theme-contrast" class="a11y-btn" title="Modo Alto Contraste Amarillo/Negro AAA">Alto Contraste</button>
+          <button id="btn-theme-light" class="a11y-btn" title="Tema claro de alta legibilidad">Claro</button>
+        </div>
+      </div>
+
+      <!-- Tamaño del Texto -->
+      <div class="a11y-group">
+        <span class="a11y-group-label">Tamaño del Texto</span>
+        <div class="a11y-btn-row">
+          <button id="btn-text-md" class="a11y-btn active" title="Tamaño de letra estándar">Normal</button>
+          <button id="btn-text-lg" class="a11y-btn" title="Aumentar tamaño de letra (Grande)">A+</button>
+          <button id="btn-text-xl" class="a11y-btn" title="Tamaño de letra extra grande">A++</button>
+        </div>
+      </div>
+
+      <!-- Ayudas Visuales Adicionales -->
+      <div class="a11y-group">
+        <span class="a11y-group-label">Legibilidad y Enfoque</span>
+        <button id="btn-dyslexia" class="a11y-btn" title="Activa tipografía con pesos y espaciado para dislexia">
+          📖 Tipografía para Dislexia
+        </button>
+        <button id="btn-highlight-links" class="a11y-btn" title="Subraya y resalta visiblemente todos los enlaces interactivos">
+          🔗 Resaltar Enlaces
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ======================================================================
+       ENCABEZADO INSTITUCIONAL
+       ====================================================================== -->
+  <header class="site-header" role="banner">
+    <div class="header-container">
+      <a href="#inicio" class="brand-badge" aria-label="Ir al inicio de la Actividad 14">
+        <div class="brand-icon" aria-hidden="true">QR</div>
+        <div class="brand-info">
+          <h1>EEST N.º 1 “Eduardo Ader”</h1>
+          <span>PWD 7° 2° Grupo B • Vicente López</span>
+        </div>
+      </a>
+
+      <nav aria-label="Navegación principal del sitio">
+        <ul class="nav-links">
+          <li><a href="#a11y-info" class="nav-link">¿Qué es a11y?</a></li>
+          <li><a href="#qr-generator" class="nav-link">Generador QR</a></li>
+          <li><a href="#qr-scanner" class="nav-link">Escáner</a></li>
+          <li><a href="#manuales-integrador" class="nav-link">Manuales Técnicos</a></li>
+          <li><a href="#wcag-tool" class="nav-link">Calculadora WCAG</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <!-- ======================================================================
+       CONTENEDOR PRINCIPAL
+       ====================================================================== -->
+  <main id="main-content" class="main-wrapper" role="main">
+
+    <!-- 1. HERO SECTION -->
+    <section id="inicio" class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-text-col">
+        <div class="hero-tag">
+          <span class="dot" aria-hidden="true"></span>
+          Actividad Pedagógica N.º 14 • 2° Cuatrimestre 2026
+        </div>
+        <h2 id="hero-title" class="hero-title">
+          Códigos QR y <span class="gradient-text">Accesibilidad Web</span>
+        </h2>
+        <p class="hero-subtitle">
+          Plataforma técnica interactiva para generar códigos QR dinámicos accesibles, optimizados para la <strong>Expo Técnica</strong>, con diseño responsivo móvil, contraste validado y manuales técnicos anuales.
+        </p>
+
+        <!-- Ficha de Datos Institucionales -->
+        <div class="hero-meta-grid" role="region" aria-label="Datos de la materia y alumno">
+          <div class="meta-item">
+            <span class="meta-label">Materia</span>
+            <span class="meta-value">Sitios Web Dinámicos (PWD)</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Estudiante</span>
+            <span class="meta-value">Gadiel Siles</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">Docente a Cargo</span>
+            <span class="meta-value">Prof. Mansilla Muñoz York Elías</span>
+          </div>
+          <div class="meta-item">
+            <span class="meta-label">División y Turno</span>
+            <span class="meta-value">7° 2° Grupo B (Mié. 17:35 - 21:45)</span>
+          </div>
+        </div>
+
+        <div class="hero-actions">
+          <a href="#qr-generator" class="btn btn-primary">
+            <span>⚡ Generar Códigos QR</span>
+          </a>
+          <a href="#manuales-integrador" class="btn btn-secondary">
+            <span>📚 Ver Manuales con QR</span>
+          </a>
+        </div>
+      </div>
+
+      <!-- Tarjeta Vista Previa Hero -->
+      <div class="hero-preview-card" aria-label="Código QR de acceso al repositorio">
+        <div id="hero-qr-container" class="hero-qr-box"></div>
+        <h3 class="hero-preview-title">Escaneo Rápido de Bienvenida</h3>
+        <p class="hero-preview-desc">Apunta la cámara de tu celular para acceder directamente al repositorio oficial del proyecto.</p>
+      </div>
+    </section>
+
+    <!-- 2. BANNER FRASE ALENTADORA ARGENTA -->
+    <aside class="argenta-banner" aria-label="Mensaje Motivacional Institucional">
+      <div class="argenta-content">
+        <span class="argenta-icon" aria-hidden="true">🚀📱</span>
+        <div>
+          <p id="argenta-quote-text" class="argenta-quote">
+            “Su código es su tarjeta de presentación; hagan que sea fácil de encontrar con un escaneo para causar sensación.”
+          </p>
+          <span class="argenta-author">— Frase motivacional pedagógica | Prof. Mansilla Muñoz York Elías</span>
+        </div>
+      </div>
+      <button class="btn-speech" data-read-target="argenta-quote-text" aria-label="Escuchar frase motivacional con voz sintética" title="Escuchar por voz">
+        🔊 Escuchar Frase
+      </button>
+    </aside>
+
+    <!-- 3. MÓDULO 1: ACCESIBILIDAD WEB (A11Y) -->
+    <section id="a11y-info" class="module-section" aria-labelledby="a11y-heading">
+      <div class="section-header">
+        <span class="section-badge">Fundamentación Pedagógica</span>
+        <h2 id="a11y-heading" class="section-title">
+          🧠 ¿Qué es la Accesibilidad Web (a11y)?
+        </h2>
+        <p class="section-desc">
+          La <strong>accesibilidad web</strong> garantiza que todas las personas, independientemente de sus capacidades físicas, visuales, auditivas, motrices o cognitivas, puedan percibir, entender, navegar e interactuar de forma autónoma con los contenidos digitales.
+        </p>
+        <button class="btn btn-secondary btn-sm" style="align-self: flex-start;" data-read-target="a11y-summary-block" aria-label="Leer sección de accesibilidad en voz alta">
+          🔊 Escuchar Explicación
+        </button>
+      </div>
+
+      <div id="a11y-summary-block" class="module-section">
+        <!-- Tarjetas Principios POUR -->
+        <div class="a11y-grid">
+          <article class="a11y-card">
+            <div class="a11y-card-icon p-icon" aria-hidden="true">👁️</div>
+            <h4>1. Perceptible (P)</h4>
+            <p>La información y componentes de la interfaz deben presentarse de modo que los usuarios puedan percibirlos mediante sus sentidos disponibles.</p>
+            <ul>
+              <li>Textos alternativos claros en imágenes y gráficos QR.</li>
+              <li>Contraste de color suficiente (mínimo 4.5:1 en texto normal).</li>
+              <li>Capacidad de escalar el tamaño de letra sin romper el layout.</li>
+            </ul>
+          </article>
+
+          <article class="a11y-card">
+            <div class="a11y-card-icon o-icon" aria-hidden="true">⌨️</div>
+            <h4>2. Operable (O)</h4>
+            <p>Los componentes de navegación e interacción deben ser utilizables mediante teclado u otros dispositivos de asistencia sin bloqueos.</p>
+            <ul>
+              <li>Navegación 100% operable por teclado con tecla <kbd>Tab</kbd>.</li>
+              <li>Foco visual nítido y visible en todo momento.</li>
+              <li>Tiempo suficiente para leer e interactuar sin límites forzados.</li>
+            </ul>
+          </article>
+
+          <article class="a11y-card">
+            <div class="a11y-card-icon u-icon" aria-hidden="true">💡</div>
+            <h4>3. Comprensible (U)</h4>
+            <p>Tanto la información como el funcionamiento de la interfaz de usuario deben ser predecibles, intuitivos y sin tecnicismos confusos.</p>
+            <ul>
+              <li>Instrucciones paso a paso e indicaciones claras.</li>
+              <li>Mensajes de error orientados a solucionar la dificultad.</li>
+              <li>Estructura semántica consistente y encabezados ordenados.</li>
+            </ul>
+          </article>
+
+          <article class="a11y-card">
+            <div class="a11y-card-icon r-icon" aria-hidden="true">🛡️</div>
+            <h4>4. Robusto (R)</h4>
+            <p>El contenido debe ser compatible con la mayor variedad de agentes de usuario, incluidos navegadores antiguos y tecnologías de asistencia.</p>
+            <ul>
+              <li>HTML5 semántico sin etiquetas obsoletas.</li>
+              <li>Atributos WAI-ARIA para enriquecer el árbol de accesibilidad.</li>
+              <li>Soporte de lectores de pantalla (JAWS, NVDA, VoiceOver, TalkBack).</li>
+            </ul>
+          </article>
+        </div>
+
+        <!-- Marco Legal y Articulación con Códigos QR -->
+        <div class="legal-box" role="note">
+          <h4>⚖️ Marco Legal y la Relación con los Códigos QR</h4>
+          <p>
+            En Estados Unidos, normativas como la <strong>ADA (Americans with Disabilities Act - Título III)</strong> y la <strong>Sección 508</strong> exigen por ley que los sitios web de servicios públicos y privados sean plenamente accesibles. En Argentina, rige la <strong>Ley Nacional 26.653</strong> de Accesibilidad de la Información en las Páginas Web.
+          </p>
+          <p>
+            <strong>¿Por qué el código QR debe ser accesible?</strong> Un código QR es el puente entre el mundo físico (un cartel, folleto o stand en la Expo Técnica) y el mundo digital. Si el sitio al que redirige no es <em>Responsive</em> (adaptable a celulares de pantalla chica, tablets y orientación horizontal/vertical) o tiene letra diminuta y bajo contraste, la persona escanea y se encuentra con una barrera insalvable. Además, el propio código QR debe acompañarse siempre de la URL escrita en texto plano para quienes no puedan utilizar una cámara óptica.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. MÓDULO 2: DESAFÍO EXPO TÉCNICA - GENERADOR DINÁMICO DE QR -->
+    <section id="qr-generator" class="module-section" aria-labelledby="generator-heading">
+      <div class="section-header">
+        <span class="section-badge">El Desafío Técnico</span>
+        <h2 id="generator-heading" class="section-title">
+          🛠️ Generador de Códigos QR Dinámicos
+        </h2>
+        <p class="section-desc">
+          Crea códigos QR personalizados en tiempo real usando la biblioteca JavaScript <code>qrcode.js</code>. Prepara tus accesos para que el público y evaluadores de la <strong>Expo Técnica</strong> accedan al instante sin escribir URLs largas.
+        </p>
+      </div>
+
+      <div class="qr-generator-layout">
+        <!-- Columna de Controles -->
+        <div class="generator-controls">
+          <!-- Entrada de Texto / URL -->
+          <div class="input-group">
+            <label for="qr-text-input">
+              <span>Dirección Web (URL) o Contenido</span>
+              <span class="input-hint">Generación inmediata</span>
+            </label>
+            <input type="text" id="qr-text-input" class="input-text" 
+                   value="https://github.com/gadyproductions/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B-" 
+                   placeholder="Escribe la URL del proyecto..."
+                   aria-describedby="qr-text-help">
+            <small id="qr-text-help" class="input-hint">Escribe cualquier texto o URL para regenerar el QR automáticamente.</small>
+          </div>
+
+          <!-- Preajustes rápidos Expo Técnica -->
+          <div class="preset-section">
+            <span>🎯 Accesos Rápidos para la Expo Técnica:</span>
+            <div class="preset-chips">
+              <button type="button" class="preset-btn" data-preset-text="https://github.com/gadyproductions/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B-">
+                🐙 Repositorio GitHub
+              </button>
+              <button type="button" class="preset-btn" data-preset-text="https://forms.gle/expo-tecnica-satisfaccion-pwd-7-2-grupo-b">
+                📝 Encuesta de Satisfacción
+              </button>
+              <button type="button" class="preset-btn" data-preset-text="https://gadyproductions.github.io/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B/#manual-usuario">
+                👤 Manual de Usuario
+              </button>
+              <button type="button" class="preset-btn" data-preset-text="https://gadyproductions.github.io/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B/#manual-programador">
+                💻 Manual de Programador
+              </button>
+              <button type="button" class="preset-btn" data-preset-text="https://gadyproductions.github.io/proyecto-simc/">
+                🛰️ Demo Proyecto Anual SIMC
+              </button>
+            </div>
+          </div>
+
+          <!-- Personalización de Colores y Tamaño -->
+          <div class="custom-grid">
+            <div class="input-group">
+              <label for="qr-color-dark">Color QR (Oscuro)</label>
+              <div class="color-picker-box">
+                <input type="color" id="qr-color-dark" value="#0b0f19" aria-label="Color del código QR">
+                <span>Oscuro</span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="qr-color-light">Fondo QR (Claro)</label>
+              <div class="color-picker-box">
+                <input type="color" id="qr-color-light" value="#ffffff" aria-label="Color de fondo del código QR">
+                <span>Fondo</span>
+              </div>
+            </div>
+
+            <div class="input-group">
+              <label for="qr-correction">Corrección Error</label>
+              <select id="qr-correction" class="select-input" aria-label="Nivel de corrección de error">
+                <option value="L">L (7% corrección)</option>
+                <option value="M">M (15% corrección)</option>
+                <option value="Q">Q (25% corrección)</option>
+                <option value="H" selected>H (30% máxima)</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Control de Tamaño Slider -->
+          <div class="input-group">
+            <label for="qr-size-input">
+              <span>Resolución / Tamaño:</span>
+              <span id="qr-size-label" class="input-hint" style="font-weight: bold; color: var(--accent-primary);">200px</span>
+            </label>
+            <input type="range" id="qr-size-input" min="128" max="320" step="16" value="200" class="input-text" style="padding: 4px;">
+          </div>
+        </div>
+
+        <!-- Columna de Vista Previa -->
+        <div class="generator-preview">
+          <div class="qr-display-card" role="region" aria-label="Tarjeta con el código QR generado">
+            <div id="qrcode-container"></div>
+            <div id="qr-caption" class="qr-caption" title="https://github.com/gadyproductions">
+              https://github.com/gadyproductions
+            </div>
+          </div>
+
+          <!-- Botones de Acción -->
+          <div class="qr-actions-row">
+            <button id="btn-download-png" class="btn btn-primary btn-sm">
+              💾 Descargar PNG
+            </button>
+            <button id="btn-copy-clipboard" class="btn btn-secondary btn-sm">
+              📋 Copiar Imagen
+            </button>
+            <button id="btnPrintCard" class="btn btn-secondary btn-sm" onclick="window.print()">
+              🖨️ Imprimir Ficha
+            </button>
+          </div>
+
+          <!-- Alerta de contraste a11y del QR -->
+          <div id="qr-contrast-notice" class="qr-contrast-badge good">
+            ✓ Contraste óptico validado para lectura rápida en cámaras
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. MÓDULO 3: VALIDADOR / ESCÁNER DE CÓDIGOS QR -->
+    <section id="qr-scanner" class="module-section" aria-labelledby="scanner-heading">
+      <div class="section-header">
+        <span class="section-badge">Validación Bidireccional</span>
+        <h2 id="scanner-heading" class="section-title">
+          📷 Validador y Lector de Códigos QR
+        </h2>
+        <p class="section-desc">
+          Comprueba que los códigos QR generados sean 100% legibles. Puedes arrastrar una captura/imagen o utilizar la cámara web de tu dispositivo en tiempo real.
+        </p>
+      </div>
+
+      <div class="scanner-grid">
+        <!-- Subida o Arrastre de Imagen -->
+        <div id="qr-dropzone" class="dropzone-box" tabindex="0" role="button" aria-label="Zona para arrastrar o subir imagen con código QR">
+          <div class="dropzone-icon" aria-hidden="true">📁</div>
+          <strong>Haz clic o arrastra aquí una imagen de QR</strong>
+          <span style="font-size: 0.82rem; color: var(--text-secondary);">Formatos compatibles: PNG, JPG, WebP</span>
+          <input type="file" id="qr-file-input" accept="image/*" style="display: none;">
+        </div>
+
+        <!-- Cámara Web -->
+        <div class="scanner-camera-box">
+          <video id="camera-video" playsinline></video>
+          <button id="btn-toggle-camera" class="btn btn-secondary">
+            <span>📷 Escanear con Cámara Web</span>
+          </button>
+          <span style="font-size: 0.82rem; color: var(--text-secondary);">Requiere permisos de cámara en tu navegador.</span>
+        </div>
+
+        <!-- Resultado del Escaneo -->
+        <div id="scan-result-card" class="scan-result-card" style="display: none;" aria-live="polite">
+          <div>
+            <strong style="color: var(--text-secondary); display: block; font-size: 0.8rem; text-transform: uppercase;">Contenido Decodificado:</strong>
+            <span id="scan-result-text" class="scan-result-text">---</span>
+          </div>
+          <a id="scan-result-link" href="#" target="_blank" class="btn btn-primary btn-sm" style="display: none;">
+            Abrir Enlace ↗
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. MÓDULO 4: ARTICULACIÓN CON EL PROYECTO ANUAL - MANUALES TÉCNICOS -->
+    <section id="manuales-integrador" class="module-section" aria-labelledby="manuales-heading">
+      <div class="section-header">
+        <span class="section-badge">Articulación con Proyecto Anual</span>
+        <h2 id="manuales-heading" class="section-title">
+          🎯 Manuales de Usuario y Programador con QR
+        </h2>
+        <p class="section-desc">
+          Conforme a la consigna de la Actividad 14: en la última página de cada manual técnico se incorpora dinámicamente un <strong>código QR generado por código JavaScript</strong> que vincula directamente a la encuesta de satisfacción y al código fuente.
+        </p>
+      </div>
+
+      <div class="manuals-container">
+        <!-- Pestañas de Selección -->
+        <div class="manuals-tabs" role="tablist">
+          <button class="tab-btn active" data-target-manual="manual-usuario" role="tab" aria-selected="true" aria-controls="manual-usuario">
+            👤 Manual de Usuario
+          </button>
+          <button class="tab-btn" data-target-manual="manual-programador" role="tab" aria-selected="false" aria-controls="manual-programador">
+            💻 Manual de Programador
+          </button>
+        </div>
+
+        <!-- MANUAL DE USUARIO -->
+        <div id="manual-usuario" class="manual-content active" role="tabpanel">
+          <div class="manual-dossier">
+            <div class="manual-header-badge">
+              <h3 class="dossier-title">Manual de Usuario: Proyecto Integrador Anual SIMC</h3>
+              <span class="dossier-version">DOC-USR-2026-V1.0</span>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>1. Propósito del Sistema</h4>
+              <p>
+                El <strong>Sistema Integrado de Monitoreo y Control (SIMC)</strong> permite a los usuarios interactuar con telemetría en tiempo real, detección de eventos con inteligencia artificial y visualización de indicadores mediante interfaces web reactivas y accesibles.
+              </p>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>2. Requisitos de Acceso para el Usuario</h4>
+              <p>
+                La plataforma está construida bajo los estándares <strong>WCAG 2.1 AA</strong> y principios <em>Mobile First</em>. Los visitantes pueden ingresar desde cualquier navegador moderno (Google Chrome, Firefox, Edge, Safari) sin necesidad de instalar software adicional.
+              </p>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>3. Guía Rápida para el Visitante de la Expo Técnica</h4>
+              <ol style="margin-left: 20px; display: flex; flex-direction: column; gap: 8px;">
+                <li>Acércate al stand de 7° 2° Grupo B en el salón de exposiciones.</li>
+                <li>Apunta la cámara de tu teléfono móvil al código QR ubicado en el pie de esta página o en los atriles del stand.</li>
+                <li>Accede instantáneamente a la demostración interactiva sin teclear URLs extensas.</li>
+                <li>Al finalizar tu recorrido, completa la breve encuesta de satisfacción para ayudarnos a calificar el proyecto.</li>
+              </ol>
+            </div>
+
+            <!-- PÁGINA FINAL OBLIGATORIA DEL MANUAL (CÓDIGO QR GENERADO POR CÓDIGO) -->
+            <div class="manual-last-page-card" role="region" aria-label="Última página del Manual de Usuario">
+              <div class="last-page-info">
+                <h4>📄 Última Página: Encuesta de Satisfacción Expo Técnica</h4>
+                <p>
+                  Agradecemos tu visita a la Expo Técnica. Conforme a las pautas pedagógicas del 2° cuatrimestre, escanea este código QR generado dinámicamente para calificar nuestro proyecto integrador:
+                </p>
+                <div class="last-page-target-url">
+                  Destino: https://forms.gle/expo-tecnica-satisfaccion-pwd-7-2-grupo-b
+                </div>
+              </div>
+              <div class="last-page-qr-wrapper">
+                <div id="qr-user-manual-lastpage"></div>
+                <span class="last-page-qr-caption">Escanea con tu Celular</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- MANUAL DE PROGRAMADOR -->
+        <div id="manual-programador" class="manual-content" role="tabpanel">
+          <div class="manual-dossier">
+            <div class="manual-header-badge">
+              <h3 class="dossier-title">Manual de Programador: Arquitectura y Especificaciones Técnicas</h3>
+              <span class="dossier-version">DOC-DEV-2026-V1.0</span>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>1. Stack Tecnológico y Arquitectura</h4>
+              <p>
+                El proyecto implementa una arquitectura modular desacoplada:
+              </p>
+              <ul style="margin-left: 20px; display: flex; flex-direction: column; gap: 6px;">
+                <li><strong>Frontend:</strong> HTML5 semántico con roles WAI-ARIA, CSS3 puro con variables y temas WCAG AAA, Vanilla JavaScript ES6+.</li>
+                <li><strong>Librería QR:</strong> <code>qrcode.js</code> para renderizado dinámico en Canvas y DOM sin dependencias externas.</li>
+                <li><strong>Backend:</strong> PHP 8.x / Python para soporte de servicios dinámicos y endpoints REST.</li>
+                <li><strong>Accesibilidad:</strong> Síntesis de voz con la API nativa <code>window.speechSynthesis</code> y calculadora de luminancia relativa W3C.</li>
+              </ul>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>2. Fragmento de Generación QR Pedagógico</h4>
+              <pre style="background: var(--bg-primary); padding: 14px; border-radius: 6px; font-family: var(--font-mono); font-size: 0.85rem; overflow-x: auto; color: var(--accent-primary); border: 1px solid var(--border-glass);"><code>// Implementación pedagógica oficial de la Actividad 14
+new QRCode(document.getElementById("qrcode"), {
+  text: "https://github.com/gadyproductions/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B-",
+  width: 128,
+  height: 128,
+  colorDark : "#000000",
+  colorLight : "#ffffff"
+});</code></pre>
+            </div>
+
+            <div class="manual-section-block">
+              <h4>3. Pautas de Accesibilidad en el Código (a11y)</h4>
+              <p>
+                Todo elemento interactivo debe poseer un atributo <code>aria-label</code> o texto legible equivalente. El ratio de contraste de cualquier elemento de texto no puede ser inferior a 4.5:1. Los códigos QR deben contar con texto visible contiguo para usuarios con lectores de pantalla.
+              </p>
+            </div>
+
+            <!-- PÁGINA FINAL OBLIGATORIA DEL MANUAL (CÓDIGO QR GENERADO POR CÓDIGO) -->
+            <div class="manual-last-page-card" role="region" aria-label="Última página del Manual de Programador">
+              <div class="last-page-info">
+                <h4>📄 Última Página: Repositorio GitHub del Código Fuente</h4>
+                <p>
+                  Accede al código fuente completo, ramas de desarrollo y commits del proyecto integrador escaneando el siguiente código QR dinámico:
+                </p>
+                <div class="last-page-target-url">
+                  Destino: https://github.com/gadyproductions/ACTIVIDAD-14-C-DIGOS-QR-Y-ACCESIBILIDAD---PWD-7-2-Grupo-B-
+                </div>
+              </div>
+              <div class="last-page-qr-wrapper">
+                <div id="qr-dev-manual-lastpage"></div>
+                <span class="last-page-qr-caption">Código Fuente GitHub</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- 7. MÓDULO 5: CALCULADORA DE CONTRASTE WCAG -->
+    <section id="wcag-tool" class="module-section" aria-labelledby="wcag-tool-heading">
+      <div class="section-header">
+        <span class="section-badge">Herramienta de Auditoría</span>
+        <h2 id="wcag-tool-heading" class="section-title">
+          🔬 Verificador de Contraste de Color WCAG 2.1
+        </h2>
+        <p class="section-desc">
+          Calcula la relación de luminancia relativa y contraste entre cualquier color de texto y fondo según el estándar internacional W3C. Esencial para asegurar la legibilidad tanto de páginas web como de códigos QR impresos.
+        </p>
+      </div>
+
+      <div class="contrast-tool-card">
+        <div class="contrast-inputs">
+          <div class="input-group">
+            <label for="calc-fg-color">Color de Texto / Primer Plano</label>
+            <div class="color-picker-box">
+              <input type="color" id="calc-fg-color" value="#38bdf8">
+              <span id="fg-color-hex">#38bdf8</span>
+            </div>
+          </div>
+
+          <div class="input-group">
+            <label for="calc-bg-color">Color de Fondo</label>
+            <div class="color-picker-box">
+              <input type="color" id="calc-bg-color" value="#0b0f19">
+              <span id="bg-color-hex">#0b0f19</span>
+            </div>
+          </div>
+        </div>
+
+        <div id="calc-preview-box" class="contrast-preview-box" style="background-color: #0b0f19; color: #38bdf8;">
+          <span style="font-size: 0.85rem; text-transform: uppercase; font-weight: 600;">Ratio de Contraste:</span>
+          <div id="calc-ratio-value" class="contrast-ratio-value">9.85:1</div>
+          <div class="contrast-badges">
+            <span id="calc-badge-aa" class="badge-wcag pass">Nivel AA: Cumple</span>
+            <span id="calc-badge-aaa" class="badge-wcag pass">Nivel AAA: Cumple</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ======================================================================
+       PIE DE PÁGINA (FOOTER)
+       ====================================================================== -->
+  <footer class="site-footer" role="contentinfo">
+    <div class="footer-container">
+      <div class="footer-info">
+        <h3>EEST N.º 1 "Eduardo Ader" • Vicente López</h3>
+        <p>Materia: Proyecto de Implementación de Sitios web Dinámicos (PWD) — 7° 2° Grupo B (2026)</p>
+        <p>Profesor: Mansilla Muñoz York Elías • <em>@docentedeclasesdeapoyo</em></p>
+      </div>
+
+      <div class="footer-credits">
+        <div class="student-badge">
+          Desarrollado por: <strong>Gadiel Siles</strong>
+        </div>
+        <p style="margin-top: 8px; font-size: 0.8rem; color: var(--text-muted);">
+          Actividad 14: Códigos QR y Accesibilidad Web (a11y)
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts: Librerías locales y Controlador Principal -->
+  <script src="js/qrcode.min.js"></script>
+  <script src="js/jsQR.min.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
